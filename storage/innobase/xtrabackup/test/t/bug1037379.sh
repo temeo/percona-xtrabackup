@@ -47,7 +47,7 @@ run_cmd_expect_failure $XB_BIN $XB_ARGS --backup --safe-slave-backup \
     --safe-slave-backup-timeout=3 --target-dir=$topdir/backup1
 
 # Check that the SQL thread is running
-run_cmd $MYSQL $MYSQL_ARGS -e "SHOW SLAVE STATUS\G" |
+run_cmd $MYSQL $MYSQL_ARGS -e "SHOW REPLICA STATUS\G" |
   egrep 'Slave_SQL_Running:[[:space:]]+Yes'
 
 ################################################################################
@@ -55,14 +55,14 @@ run_cmd $MYSQL $MYSQL_ARGS -e "SHOW SLAVE STATUS\G" |
 # if it is stopped when taking a backup
 ################################################################################
 
-run_cmd $MYSQL $MYSQL_ARGS -e "STOP SLAVE SQL_THREAD"
+run_cmd $MYSQL $MYSQL_ARGS -e "STOP REPLICA SQL_THREAD"
 
 # The following will fail due to a timeout
 run_cmd_expect_failure $XB_BIN $XB_ARGS --backup --safe-slave-backup \
     --safe-slave-backup-timeout=3 --target-dir=$topdir/backup2
 
 # Check that the SQL thread is stopped
-run_cmd $MYSQL $MYSQL_ARGS -e "SHOW SLAVE STATUS\G" |
+run_cmd $MYSQL $MYSQL_ARGS -e "SHOW REPLICA STATUS\G" |
   egrep 'Slave_SQL_Running:[[:space:]]+No'
 
 kill -SIGKILL $job_master

@@ -1944,15 +1944,7 @@ bool dynamic_plugins_are_initialized = false;
 static const char *default_dbug_option;
 #endif
 
-<<<<<<< HEAD
 #ifndef XTRABACKUP
-bool opt_use_ssl = true;
-bool opt_use_admin_ssl = true;
-||||||| 824e2b40640
-bool opt_use_ssl = true;
-bool opt_use_admin_ssl = true;
-=======
->>>>>>> mysql-8.4.0
 ulong opt_ssl_fips_mode = SSL_FIPS_MODE_OFF;
 #endif
 
@@ -7066,14 +7058,8 @@ static int init_ssl() {
 }
 
 static int init_ssl_communication() {
-<<<<<<< HEAD
 #if !defined(XTRABACKUP)
-  if (TLS_channel::singleton_init(&mysql_main, mysql_main_channel, opt_use_ssl,
-||||||| 824e2b40640
-  if (TLS_channel::singleton_init(&mysql_main, mysql_main_channel, opt_use_ssl,
-=======
   if (TLS_channel::singleton_init(&mysql_main, mysql_main_channel,
->>>>>>> mysql-8.4.0
                                   &server_main_callback, opt_initialize))
     return 1;
 
@@ -7087,12 +7073,11 @@ static int init_ssl_communication() {
                                     &server_admin_callback, opt_initialize))
       return 1;
 
-    if (!g_admin_ssl_configured) {
-      Lock_and_access_ssl_acceptor_context context(mysql_main);
-      if (context.have_ssl())
-        LogErr(SYSTEM_LEVEL, ER_TLS_CONFIGURATION_REUSED,
-               mysql_admin_channel.c_str(), mysql_main_channel.c_str());
-    }
+  if (!g_admin_ssl_configured) {
+    Lock_and_access_ssl_acceptor_context context(mysql_main);
+    if (context.have_ssl())
+      LogErr(SYSTEM_LEVEL, ER_TLS_CONFIGURATION_REUSED,
+             mysql_admin_channel.c_str(), mysql_main_channel.c_str());
   }
 #endif
 
@@ -10803,28 +10788,6 @@ struct my_option my_long_options[] = {
      "Option used by mysql-test for debugging and testing of replication.",
      &opt_sporadic_binlog_dump_fail, &opt_sporadic_binlog_dump_fail, 0,
      GET_BOOL, NO_ARG, 0, 0, 0, nullptr, 0, nullptr},
-<<<<<<< HEAD
-#ifndef XTRABACKUP
-    {"ssl", OPT_USE_SSL,
-     "Enable SSL for connection (automatically enabled with other flags).",
-     &opt_use_ssl, &opt_use_ssl, nullptr, GET_BOOL, OPT_ARG, 1, 0, 0, nullptr,
-     0, nullptr},
-    {"admin-ssl", OPT_USE_ADMIN_SSL,
-     "Enable SSL for admin interface (automatically enabled with other flags).",
-     &opt_use_admin_ssl, &opt_use_admin_ssl, nullptr, GET_BOOL, OPT_ARG, 1, 0,
-     0, nullptr, 0, nullptr},
-#endif /* XTRABACKUP */
-||||||| 824e2b40640
-    {"ssl", OPT_USE_SSL,
-     "Enable SSL for connection (automatically enabled with other flags).",
-     &opt_use_ssl, &opt_use_ssl, nullptr, GET_BOOL, OPT_ARG, 1, 0, 0, nullptr,
-     0, nullptr},
-    {"admin-ssl", OPT_USE_ADMIN_SSL,
-     "Enable SSL for admin interface (automatically enabled with other flags).",
-     &opt_use_admin_ssl, &opt_use_admin_ssl, nullptr, GET_BOOL, OPT_ARG, 1, 0,
-     0, nullptr, 0, nullptr},
-=======
->>>>>>> mysql-8.4.0
 #ifdef _WIN32
     {"standalone", 0, "Dummy option to start as a standalone program (NT).",
      nullptr, nullptr, nullptr, GET_NO_ARG, NO_ARG, 0, 0, 0, nullptr, 0,
@@ -12101,35 +12064,7 @@ bool mysqld_get_one_option(int optid,
     case OPT_BINLOG_EXPIRE_LOGS_SECONDS:
       binlog_expire_logs_seconds_supplied = true;
       break;
-<<<<<<< HEAD
 #ifndef XTRABACKUP
-    case OPT_SSL_KEY:
-    case OPT_SSL_CERT:
-    case OPT_SSL_CA:
-    case OPT_SSL_CAPATH:
-    case OPT_SSL_CRL:
-    case OPT_SSL_CRLPATH:
-      /*
-        Enable use of SSL if we are using any ssl option.
-        One can disable SSL later by using --skip-ssl or --ssl=0.
-      */
-      opt_use_ssl = true;
-      break;
-||||||| 824e2b40640
-    case OPT_SSL_KEY:
-    case OPT_SSL_CERT:
-    case OPT_SSL_CA:
-    case OPT_SSL_CAPATH:
-    case OPT_SSL_CRL:
-    case OPT_SSL_CRLPATH:
-      /*
-        Enable use of SSL if we are using any ssl option.
-        One can disable SSL later by using --skip-ssl or --ssl=0.
-      */
-      opt_use_ssl = true;
-      break;
-=======
->>>>>>> mysql-8.4.0
     case OPT_TLS_CIPHERSUITES:
       if (validate_ciphers(opt->name, argument, TLS_version::TLSv13))
         return true;
