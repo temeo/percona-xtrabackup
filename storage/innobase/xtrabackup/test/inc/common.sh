@@ -1406,7 +1406,7 @@ function backup_and_restore() {
     run_cmd $XB_BIN $XB_ARGS --prepare --target-dir=$topdir/backup
   else
     xtrabackup --backup --target-dir=$topdir/backup --xtrabackup-plugin-dir=${plugin_dir}
-    run_cmd $XB_BIN $XB_ARGS --xtrabackup-plugin-dir=${plugin_dir} --prepare \
+    run_cmd $XB_BIN $XB_ARGS --prepare --xtrabackup-plugin-dir=${plugin_dir} \
       --target-dir=$topdir/backup ${keyring_args}
   fi
 
@@ -1414,6 +1414,10 @@ function backup_and_restore() {
   stop_server
   rm -rf $mysql_datadir
   xtrabackup --copy-back --target-dir=$topdir/backup
+  
+  cp ${instance_local_manifest}  $mysql_datadir
+  cp ${keyring_component_cnf} $mysql_datadir
+
   start_server
   # Verify backup
   run_cmd verify_db_state $db

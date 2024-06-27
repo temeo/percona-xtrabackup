@@ -4,9 +4,10 @@
 
 require_server_version_higher_than 5.7.10
 
+KEYRING_TYPE="component"
+. inc/keyring_common.sh
 . inc/keyring_file.sh
-
-start_server
+configure_server_with_component
 
 mysql -e "CREATE TABLE t (a INT) ENCRYPTION='y'" test
 
@@ -26,6 +27,9 @@ run_cmd_expect_failure $XB_BIN $XB_ARGS --prepare --target-dir=$topdir/backup
 
 rm -rf $mysql_datadir
 rm -rf $topdir/backup
+
+cp ${instance_local_manifest}  $mysql_datadir
+cp ${keyring_component_cnf} $mysql_datadir
 
 start_server
 
