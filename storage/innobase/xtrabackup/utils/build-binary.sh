@@ -87,7 +87,7 @@ export CC=${CC:-gcc}
 export CXX=${CXX:-g++}
 export CFLAGS=${CFLAGS:-}
 export CXXFLAGS=${CXXFLAGS:-}
-export MAKE_JFLAG=-j4
+export MAKE_JFLAG=-j$(nproc)
 
 CMAKE_BIN='cmake'
 
